@@ -1,0 +1,1 @@
+{"type":"pg_create_select_permission","args":{"source":"default","table":{"schema":"public","name":"workflow_runs"},"role":"user","permission":{"columns":["id","workflow_id","triggered_by","trigger_type","status","started_at","completed_at","error","created_at"],"filter":{"workflow":{"organization":{"org_members":{"user_id":{"_eq":"X-Hasura-User-Id"}}}}}}}}

@@ -1,0 +1,1 @@
+{"type":"pg_create_insert_permission","args":{"source":"default","table":{"schema":"public","name":"workflow_steps"},"role":"user","permission":{"columns":["workflow_id","step_order","step_type","name","config"],"check":{"workflow":{"organization":{"org_members":{"_and":[{"user_id":{"_eq":"X-Hasura-User-Id"}},{"role":{"_in":["owner","editor"]}}]}}}}}}}
