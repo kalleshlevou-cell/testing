@@ -1,0 +1,30 @@
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+frontend/node_modules/
+functions/node_modules/
+
+# Build outputs
+frontend/build/
+functions/dist/
+
+# Nhost local state
+.nhost/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+.vercel

@@ -1,0 +1,15 @@
+- name: on_workflow_run_created
+  table:
+    name: workflow_runs
+    schema: public
+  webhook: '{{NHOST_FUNCTIONS_URL}}/triggerWorkflowRun'
+  insert:
+    columns: '*'
+  retry_conf:
+    num_retries: 3
+    interval_sec: 10
+    timeout_sec: 60
+  headers:
+    - name: x-nhost-webhook-secret
+      value_from_env: NHOST_WEBHOOK_SECRET
+  comment: Fires when a new workflow_run row is inserted (trigger_type = db_event)

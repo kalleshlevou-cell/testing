@@ -1,0 +1,17 @@
+{"type":"bulk","args":[
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"org_members"},"name":"organization","using":{"foreign_key_constraint_on":"org_id"}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"organizations"},"name":"org_members","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"org_members"},"column":"org_id"}}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"organizations"},"name":"workflows","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"workflows"},"column":"org_id"}}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"workflows"},"name":"organization","using":{"foreign_key_constraint_on":"org_id"}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"workflows"},"name":"workflow_steps","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"workflow_steps"},"column":"workflow_id"}}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"workflows"},"name":"workflow_triggers","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"workflow_triggers"},"column":"workflow_id"}}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"workflows"},"name":"workflow_runs","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"workflow_runs"},"column":"workflow_id"}}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_steps"},"name":"workflow","using":{"foreign_key_constraint_on":"workflow_id"}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_steps"},"name":"step_runs","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"step_runs"},"column":"step_id"}}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_triggers"},"name":"workflow","using":{"foreign_key_constraint_on":"workflow_id"}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_runs"},"name":"workflow","using":{"foreign_key_constraint_on":"workflow_id"}}},
+  {"type":"pg_create_array_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_runs"},"name":"step_runs","using":{"foreign_key_constraint_on":{"table":{"schema":"public","name":"step_runs"},"column":"workflow_run_id"}}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"step_runs"},"name":"workflow_run","using":{"foreign_key_constraint_on":"workflow_run_id"}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"step_runs"},"name":"step","using":{"foreign_key_constraint_on":"step_id"}}},
+  {"type":"pg_create_object_relationship","args":{"source":"default","table":{"schema":"public","name":"workflow_results"},"name":"workflow_run","using":{"foreign_key_constraint_on":"workflow_run_id"}}}
+]}

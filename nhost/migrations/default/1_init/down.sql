@@ -1,0 +1,13 @@
+-- Rollback initial schema migration
+
+DROP VIEW IF EXISTS org_monthly_usage;
+
+DROP TABLE IF EXISTS step_runs CASCADE;
+DROP TABLE IF EXISTS workflow_runs CASCADE;
+DROP TABLE IF EXISTS workflow_triggers CASCADE;
+DROP TABLE IF EXISTS workflow_steps CASCADE;
+DROP TABLE IF EXISTS workflows CASCADE;
+DROP TABLE IF EXISTS org_members CASCADE;
+DROP TABLE IF EXISTS organizations CASCADE;
+
+DROP FUNCTION IF EXISTS update_updated_at CASCADE;

@@ -1,0 +1,26 @@
+version: "3.8"
+
+# This file provides local overrides for the nhost dev environment.
+# The primary docker-compose is managed by the Nhost CLI.
+# Run `nhost up` instead of docker-compose up directly.
+
+services:
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secretpgpassword}
+
+  hasura:
+    environment:
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-nhost-admin-secret}
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${NHOST_JWT_SECRET:-0f987876650b4a085e64594fae9219e7762aec5e8070e0ca6e0a3ef94d2d2370}"}'
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-local-webhook-secret}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+
+  functions:
+    environment:
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-local-webhook-secret}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-nhost-admin-secret}
+      NHOST_GRAPHQL_URL: http://hasura:8080/v1/graphql

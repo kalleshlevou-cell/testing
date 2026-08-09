@@ -1,0 +1,35 @@
+version: 3
+
+hasura:
+  version: v2.33.0
+  adminSecret: '{{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}'
+  webhookSecret: '{{ secrets.NHOST_WEBHOOK_SECRET }}'
+
+functions:
+  node:
+    version: 18
+
+auth:
+  version: 0.21.2
+  redirections:
+    clientUrl: '{{ env.AUTH_CLIENT_URL }}'
+  signUp:
+    enabled: true
+    disableNewUsers: false
+  email:
+    passwordless:
+      enabled: false
+  tokens:
+    refreshToken:
+      expiresIn: 43200
+    accessToken:
+      expiresIn: 900
+      customClaims:
+        - key: org-id
+          value: 'profile.default_org_id'
+
+storage:
+  version: 0.3.5
+
+postgres:
+  version: '14.6-20230403-1'
