@@ -27,4 +27,24 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Temp permission/setup files
+p1.json
+p2.json
+p3.json
+p4.json
+p5.json
+p6.json
+permissions.json
+final_permissions.json
+relationships.json
+actions.json
+cron.json
+secret.txt
+run_permissions.bat
+run_final_perms.bat
+run_cron.bat
+send_perms.bat
+setup_hasura.bat
+apply_permissions.ps1
 .vercel
