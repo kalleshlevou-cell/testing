@@ -11,15 +11,9 @@ import type { Request, Response } from 'express';
 const GRAPHQL_URL =
   process.env.NHOST_GRAPHQL_URL ??
   'https://tnpbzdizermlvqxpyqrh.hasura.ap-south-1.nhost.run/v1/graphql';
-
-let ADMIN_SECRET =
+const ADMIN_SECRET =
   process.env.HASURA_GRAPHQL_ADMIN_SECRET ??
-  process.env.NHOST_ADMIN_SECRET ??
-  'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-
-if (GRAPHQL_URL.includes('nhost.run') && ADMIN_SECRET === 'nhost-admin-secret') {
-  ADMIN_SECRET = 'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-}
+  process.env.NHOST_ADMIN_SECRET ?? '';
 
 async function adminQuery<T = unknown>(
   query: string,
@@ -94,7 +88,9 @@ export default async function handler(req: Request, res: Response) {
       if (!cron) continue;
       if (!matchesCron(cron, now)) continue;
 
-      // 2. Create a workflow run for matching triggers
+      // 2. Create a workflow_run row — the `on_workflow_run_created` Hasura event
+      //    trigger will automatically fire triggerWorkflowRun, so no direct HTTP
+      //    call is needed here (avoids double execution).
       const runData = await adminQuery<{ insert_workflow_runs_one: { id: string } }>(
         `mutation CreateRun($workflow_id: uuid!) {
           insert_workflow_runs_one(object: {
@@ -106,25 +102,6 @@ export default async function handler(req: Request, res: Response) {
         { workflow_id: trigger.workflow_id }
       );
       triggered.push(runData.insert_workflow_runs_one.id);
-
-      // 3. Fire-and-forget run execution
-      const functionsUrl = process.env.NHOST_FUNCTIONS_URL ?? '';
-      if (functionsUrl) {
-        fetch(`${functionsUrl}/triggerWorkflowRun`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-nhost-webhook-secret': process.env.NHOST_WEBHOOK_SECRET ?? '',
-          },
-          body: JSON.stringify({
-            event: {
-              data: {
-                new: { workflow_id: trigger.workflow_id, id: runData.insert_workflow_runs_one.id },
-              },
-            },
-          }),
-        }).catch(console.error);
-      }
     }
 
     return res.json({

@@ -227,10 +227,12 @@ export const DashboardPage = () => {
                 </div>
 
                 <div className="workflow-card-footer">
-                  <Link to={`/workflows/${wf.id}/run`} className="btn btn-sm">
-                    <Play size={12} />
-                    View Runs
-                  </Link>
+                  {lastRun && (
+                    <Link to={`/runs/${lastRun.id}`} className="btn btn-sm">
+                      <Play size={12} />
+                      Last Run
+                    </Link>
+                  )}
                   {(myRole === 'owner' || myRole === 'editor') && (
                     <Link
                       to={`/workflows/${wf.id}`}

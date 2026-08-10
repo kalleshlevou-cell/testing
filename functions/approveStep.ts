@@ -4,14 +4,9 @@ const GRAPHQL_URL =
   process.env.NHOST_GRAPHQL_URL ??
   'https://tnpbzdizermlvqxpyqrh.hasura.ap-south-1.nhost.run/v1/graphql';
 
-let ADMIN_SECRET =
+const ADMIN_SECRET =
   process.env.HASURA_GRAPHQL_ADMIN_SECRET ??
-  process.env.NHOST_ADMIN_SECRET ??
-  'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-
-if (GRAPHQL_URL.includes('nhost.run') && ADMIN_SECRET === 'nhost-admin-secret') {
-  ADMIN_SECRET = 'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-}
+  process.env.NHOST_ADMIN_SECRET ?? '';
 
 async function adminQuery<T = unknown>(
   query: string,
@@ -287,6 +282,7 @@ export default async function handler(req: Request, res: Response) {
           const cond = evaluateCondition(step.config.condition as string, lastOutput);
           output = { condition: step.config.condition, result: cond };
           skipTo = cond ? (step.config.true_branch as number) : (step.config.false_branch as number);
+          await adminQuery(UPDATE_STEP_RUN_GENERIC, { id: srId, status: 'completed', output, error: null, attempt_count: 1, started_at: undefined, completed_at: new Date().toISOString() });
         } else {
           let attempts = 1;
           for (let i = 0; i < 2; i++) {
@@ -303,11 +299,7 @@ export default async function handler(req: Request, res: Response) {
             }
           }
           await adminQuery(UPDATE_STEP_RUN_GENERIC, { id: srId, status: 'completed', output, error: null, attempt_count: attempts, started_at: undefined, completed_at: new Date().toISOString() });
-          lastOutput = output;
-          continue;
         }
-
-        await adminQuery(UPDATE_STEP_RUN_GENERIC, { id: srId, status: 'completed', output, error: null, attempt_count: 1, started_at: undefined, completed_at: new Date().toISOString() });
         lastOutput = output;
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);

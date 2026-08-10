@@ -12,14 +12,9 @@ import type { Request, Response } from 'express';
 const GRAPHQL_URL =
   process.env.NHOST_GRAPHQL_URL ??
   'https://tnpbzdizermlvqxpyqrh.hasura.ap-south-1.nhost.run/v1/graphql';
-let ADMIN_SECRET =
+const ADMIN_SECRET =
   process.env.HASURA_GRAPHQL_ADMIN_SECRET ??
-  process.env.NHOST_ADMIN_SECRET ??
-  'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-
-if (GRAPHQL_URL.includes('nhost.run') && ADMIN_SECRET === 'nhost-admin-secret') {
-  ADMIN_SECRET = 'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
-}
+  process.env.NHOST_ADMIN_SECRET ?? '';
 
 async function adminQuery<T = unknown>(
   query: string,
@@ -78,7 +73,8 @@ export default async function handler(req: Request, res: Response) {
       return res.status(401).json({ message: 'Invalid webhook secret' });
     }
 
-    // 2. Create a workflow run directly (no user, trigger_type = webhook)
+    // 2. Create a workflow_run row — the `on_workflow_run_created` Hasura event
+    //    trigger fires triggerWorkflowRun automatically. No direct HTTP call needed.
     const runData = await adminQuery<{ insert_workflow_runs_one: { id: string } }>(
       `mutation CreateRun($workflow_id: uuid!) {
         insert_workflow_runs_one(object: {
@@ -90,22 +86,6 @@ export default async function handler(req: Request, res: Response) {
       { workflow_id }
     );
     const runId = runData.insert_workflow_runs_one.id;
-
-    // 3. Dispatch to triggerWorkflowRun logic (call ourselves or inline)
-    // We re-use the trigger function URL if available, otherwise fall back to inline execution
-    const functionsUrl = process.env.NHOST_FUNCTIONS_URL ?? '';
-    if (functionsUrl) {
-      fetch(`${functionsUrl}/triggerWorkflowRun`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-nhost-webhook-secret': process.env.NHOST_WEBHOOK_SECRET ?? '',
-        },
-        body: JSON.stringify({
-          event: { data: { new: { workflow_id, id: runId } } },
-        }),
-      }).catch(console.error); // Fire and forget
-    }
 
     return res.json({
       workflow_run_id: runId,
