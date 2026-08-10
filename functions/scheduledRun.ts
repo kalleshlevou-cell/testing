@@ -9,8 +9,16 @@ import type { Request, Response } from 'express';
  */
 
 const GRAPHQL_URL =
-  process.env.NHOST_GRAPHQL_URL ?? 'http://localhost:1337/v1/graphql';
-const ADMIN_SECRET = process.env.HASURA_GRAPHQL_ADMIN_SECRET ?? 'nhost-admin-secret';
+  process.env.NHOST_GRAPHQL_URL ??
+  'https://tnpbzdizermlvqxpyqrh.hasura.ap-south-1.nhost.run/v1/graphql';
+let ADMIN_SECRET =
+  process.env.HASURA_GRAPHQL_ADMIN_SECRET ??
+  process.env.NHOST_ADMIN_SECRET ??
+  'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
+
+if (GRAPHQL_URL.includes('nhost.run') && ADMIN_SECRET === 'nhost-admin-secret') {
+  ADMIN_SECRET = 'oD:Vs!yDpYbb07(KVf_-j:yzbCoW!G$d';
+}
 
 async function adminQuery<T = unknown>(
   query: string,

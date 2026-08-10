@@ -1,0 +1,9 @@
+{
+  "name": "testing",
+  "gitSource": {
+    "type": "github",
+    "repoId": 1328893305,
+    "ref": "main"
+  },
+  "target": "production"
+}

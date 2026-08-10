@@ -1,0 +1,113 @@
+{
+  "type": "bulk",
+  "args": [
+    {
+      "type": "update_action",
+      "args": {
+        "name": "approveStep",
+        "definition": {
+          "handler": "{{NHOST_FUNCTIONS_URL}}/approveStep",
+          "output_type": "ApproveStepResult",
+          "forward_client_headers": true,
+          "ignored_client_headers": [
+            "Content-Length",
+            "Content-MD5",
+            "User-Agent",
+            "Host",
+            "Origin",
+            "Referer",
+            "Accept",
+            "Accept-Encoding",
+            "Accept-Language",
+            "Accept-Datetime",
+            "Cache-Control",
+            "Connection",
+            "DNT",
+            "Content-Type"
+          ],
+          "arguments": [
+            {
+              "name": "step_run_id",
+              "type": "uuid!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      }
+    },
+    {
+      "type": "update_action",
+      "args": {
+        "name": "triggerWorkflowRun",
+        "definition": {
+          "handler": "{{NHOST_FUNCTIONS_URL}}/triggerWorkflowRun",
+          "output_type": "WorkflowRunResult",
+          "forward_client_headers": true,
+          "ignored_client_headers": [
+            "Content-Length",
+            "Content-MD5",
+            "User-Agent",
+            "Host",
+            "Origin",
+            "Referer",
+            "Accept",
+            "Accept-Encoding",
+            "Accept-Language",
+            "Accept-Datetime",
+            "Cache-Control",
+            "Connection",
+            "DNT",
+            "Content-Type"
+          ],
+          "arguments": [
+            {
+              "name": "workflow_id",
+              "type": "uuid!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      }
+    },
+    {
+      "type": "update_action",
+      "args": {
+        "name": "webhookTriggerWorkflow",
+        "definition": {
+          "handler": "{{NHOST_FUNCTIONS_URL}}/webhookTrigger",
+          "output_type": "WorkflowRunResult",
+          "ignored_client_headers": [
+            "Content-Length",
+            "Content-MD5",
+            "User-Agent",
+            "Host",
+            "Origin",
+            "Referer",
+            "Accept",
+            "Accept-Encoding",
+            "Accept-Language",
+            "Accept-Datetime",
+            "Cache-Control",
+            "Connection",
+            "DNT",
+            "Content-Type"
+          ],
+          "arguments": [
+            {
+              "name": "workflow_id",
+              "type": "uuid!"
+            },
+            {
+              "name": "secret",
+              "type": "String!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "query": "mutation TriggerWorkflowRun($workflow_id: uuid!) { triggerWorkflowRun(workflow_id: $workflow_id) { workflow_run_id status message } }",
+  "variables": {
+    "workflow_id": "651fee32-3641-4350-a2c2-f41d11d37446"
+  }
+}

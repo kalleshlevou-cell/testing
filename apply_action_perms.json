@@ -1,0 +1,26 @@
+{
+  "type": "bulk",
+  "args": [
+    {
+      "type": "create_action_permission",
+      "args": {
+        "action": "triggerWorkflowRun",
+        "role": "user"
+      }
+    },
+    {
+      "type": "create_action_permission",
+      "args": {
+        "action": "approveStep",
+        "role": "user"
+      }
+    },
+    {
+      "type": "create_action_permission",
+      "args": {
+        "action": "webhookTriggerWorkflow",
+        "role": "public"
+      }
+    }
+  ]
+}

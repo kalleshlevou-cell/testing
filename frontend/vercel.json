@@ -1,8 +1,16 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "framework": "create-react-app",
-  "rewrites": [
+  "framework": "create-react-app",  "build": {
+    "env": {
+      "REACT_APP_NHOST_SUBDOMAIN": "tnpbzdizermlvqxpyqrh",
+      "REACT_APP_NHOST_REGION": "ap-south-1"
+    }
+  },
+  "env": {
+    "REACT_APP_NHOST_SUBDOMAIN": "tnpbzdizermlvqxpyqrh",
+    "REACT_APP_NHOST_REGION": "ap-south-1"
+  },  "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

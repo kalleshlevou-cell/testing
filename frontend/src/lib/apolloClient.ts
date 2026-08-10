@@ -8,13 +8,13 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { setContext } from '@apollo/client/link/context';
-import { nhost } from './nhost';
+import { nhost, NHOST_SUBDOMAIN, NHOST_REGION } from './nhost';
 
-const isLocal = process.env.REACT_APP_NHOST_SUBDOMAIN === 'local';
+const isLocal = NHOST_SUBDOMAIN === 'local';
 
 const GRAPHQL_HTTP = isLocal
   ? 'http://localhost:1337/v1/graphql'
-  : `https://${process.env.REACT_APP_NHOST_SUBDOMAIN}.hasura.${process.env.REACT_APP_NHOST_REGION}.nhost.run/v1/graphql`;
+  : `https://${NHOST_SUBDOMAIN}.hasura.${NHOST_REGION}.nhost.run/v1/graphql`;
 
 const GRAPHQL_WS = GRAPHQL_HTTP.replace(/^http/, 'ws');
 
