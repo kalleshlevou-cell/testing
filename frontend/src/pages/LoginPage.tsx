@@ -53,8 +53,6 @@ export const LoginPage = () => {
 
   const isLoading = signInLoading || signUpLoading;
 
-  const backendMissing = !process.env.REACT_APP_NHOST_SUBDOMAIN ||
-    process.env.REACT_APP_NHOST_SUBDOMAIN === 'your-subdomain';
 
   return (
     <div className="auth-page">
@@ -64,17 +62,6 @@ export const LoginPage = () => {
           <h1 className="auth-title">WorkflowAI</h1>
           <p className="auth-subtitle">AI Agent Workflow Builder</p>
         </div>
-
-        {backendMissing && (
-          <div className="alert alert-warning">
-            <strong>Backend not configured.</strong><br />
-            Set <code>REACT_APP_NHOST_SUBDOMAIN</code> in <code>frontend/.env</code> to your nhost project subdomain,
-            then restart <code>npm start</code>.<br />
-            <a href="https://app.nhost.io" target="_blank" rel="noreferrer" style={{color:'inherit'}}>
-              Create a free nhost project →
-            </a>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">

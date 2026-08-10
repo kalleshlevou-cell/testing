@@ -48,3 +48,4 @@ send_perms.bat
 setup_hasura.bat
 apply_permissions.ps1
 .vercel
+.env*
